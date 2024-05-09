@@ -1,0 +1,27 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: myapp-ingress
+  namespace: myapp
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.app.local.kiwithon.com`)
+      kind: Rule
+      services:
+        - name: myapp-service
+          port: 8080
+    - match: Host(`app.local.kiwithon.com`)
+      kind: Rule
+      services:
+        - name: myapp-service
+          port: 8080
+#      middlewares:
+ #       - name: default-headers
+  tls:
+    #secretName: local-kiwithon-com-stagingtest-tls
+    secretName: local-kiwithon-com-tls
